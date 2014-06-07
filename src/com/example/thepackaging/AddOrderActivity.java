@@ -1,7 +1,9 @@
 package com.example.thepackaging;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -19,6 +21,7 @@ public class AddOrderActivity extends Activity{
 	private EditText Edit_meal;
 	private EditText Edit_information;
 	private Spinner spinner;
+	public SQLiteActivity memberDAO;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,7 @@ public class AddOrderActivity extends Activity{
         Edit_meal = (EditText)findViewById(R.id.meal);
         Edit_information = (EditText)findViewById(R.id.information);
         spinner = (Spinner)findViewById(R.id.spinner);
+        memberDAO = new SQLiteActivity(AddOrderActivity.this);
         
         Btn_back.setOnClickListener(new OnClickListener() {
 			
@@ -51,8 +55,19 @@ public class AddOrderActivity extends Activity{
 				String str_place = Edit_place.getText().toString();
 				String str_meal = Edit_meal.getText().toString();
 				String str_infor = Edit_information.getText().toString();
+				String str_canteen = spinner.getSelectedItem().toString();
 				
 				if(!str_place.equals("") && !str_meal.equals("")){
+					SQLiteDatabase db = memberDAO.getWritableDatabase();
+					ContentValues values = new ContentValues();
+					values.put("foodname", str_meal);
+					values.put("canteem", str_canteen);
+					values.put("palce", str_place);
+					values.put("intro", str_infor);
+					long rid = db.insert("myorder", null, values);
+					db.close();
+					Toast.makeText(AddOrderActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+					
 					Intent intent  = new Intent();
 					intent.setClass(AddOrderActivity.this, HistoryOrderActivity.class);
 					startActivity(intent);
