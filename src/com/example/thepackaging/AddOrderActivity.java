@@ -64,6 +64,7 @@ public class AddOrderActivity extends Activity{
 					values.put("canteem", str_canteen);
 					values.put("palce", str_place);
 					values.put("intro", str_infor);
+					values.put("time", "0");
 					long rid = db.insert("myorder", null, values);
 					db.close();
 					Toast.makeText(AddOrderActivity.this, "发布成功", Toast.LENGTH_SHORT).show();

@@ -62,10 +62,22 @@ public class MainActivity extends Activity {
 								if(c.getString(4).equals(str_phone)){
 									flag = false;
 									if(c.getString(5).equals(str_password)){
-										Intent intent  = new Intent();
-										intent.setClass(MainActivity.this, HallActivity.class);
-										startActivity(intent);
-										finish();
+										if(c.getString(1).equals(""))
+										{
+											AdminManage Admin = new AdminManage(str_phone, str_password, "", "", "");
+											Intent intent  = new Intent();
+											intent.setClass(MainActivity.this, UpdateActivity.class);
+											startActivity(intent);
+											finish();
+										}
+										else {
+											AdminManage Admin = new AdminManage(str_phone, str_password, c.getString(1), c.getString(2), c.getString(6));
+											
+											Intent intent  = new Intent();
+											intent.setClass(MainActivity.this, HallActivity.class);
+											startActivity(intent);
+											finish();
+										}
 									}
 									else {
 										Toast.makeText(MainActivity.this, "√‹¬Î¥ÌŒÛ", Toast.LENGTH_SHORT).show();

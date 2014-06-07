@@ -63,6 +63,7 @@ public class SignInActivity extends Activity{
 							ContentValues values = new ContentValues();
 							values.put("phone", str_phone);
 							values.put("password", str_password);
+							values.put("name", "");
 							long rid = db.insert("users", null, values);
 							db.close();
 							Toast.makeText(SignInActivity.this, "×¢²á³É¹¦", Toast.LENGTH_SHORT).show();

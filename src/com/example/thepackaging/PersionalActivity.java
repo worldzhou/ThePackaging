@@ -7,11 +7,16 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class PersionalActivity  extends Activity {
 	
 	private Button Btn_back;
 	private Button Btn_history;
+	private TextView Text_name;
+	private EditText Text_intro;
+	AdminManage admin;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +24,11 @@ public class PersionalActivity  extends Activity {
         
         Btn_back = (Button)findViewById(R.id.back);
         Btn_history = (Button)findViewById(R.id.history);
+        Text_name = (TextView)findViewById(R.id.name);
+        Text_intro = (EditText)findViewById(R.id.intro);
+        
+        Text_name.setText(admin.getname());
+        Text_intro.setText(admin.getintro());
         
         Btn_back.setOnClickListener(new OnClickListener() {
 			
