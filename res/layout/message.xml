@@ -34,8 +34,7 @@
             android:layout_marginTop="40dp"
             android:layout_gravity="center"
             android:ems="10"
-            android:hint="姓名"
-            android:inputType="phone" />
+            android:hint="姓名" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -67,8 +66,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:ems="10"
-            android:hint="个人简介"
-            android:inputType="textPassword" >
+            android:hint="个人简介" >
 
             <requestFocus />
         </EditText>

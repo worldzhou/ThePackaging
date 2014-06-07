@@ -12,8 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
 
+
+public class MainActivity extends Activity {
+	
 	private Button Sign;
 	private Button Login;
 	private EditText Edit_phone;
@@ -56,22 +58,24 @@ public class MainActivity extends Activity {
 						SQLiteDatabase db = memberDAO.getReadableDatabase();
 						Cursor c = db.rawQuery("select * from users", null);
 						boolean flag = true;
+						
 						if(c.getCount()>0){
 							while(c.moveToNext()){
 								System.out.println();
 								if(c.getString(4).equals(str_phone)){
 									flag = false;
 									if(c.getString(5).equals(str_password)){
+										System.out.println(c.getString(1));
 										if(c.getString(1).equals(""))
 										{
-											AdminManage Admin = new AdminManage(str_phone, str_password, "", "", "");
+											AdminManage.admin = new AdminManage(str_phone, str_password, "", "", "");
 											Intent intent  = new Intent();
 											intent.setClass(MainActivity.this, UpdateActivity.class);
 											startActivity(intent);
 											finish();
 										}
 										else {
-											AdminManage Admin = new AdminManage(str_phone, str_password, c.getString(1), c.getString(2), c.getString(6));
+											AdminManage.admin = new AdminManage(str_phone, str_password, c.getString(1), c.getString(2), c.getString(6));
 											
 											Intent intent  = new Intent();
 											intent.setClass(MainActivity.this, HallActivity.class);

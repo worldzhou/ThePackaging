@@ -61,8 +61,8 @@ public class AddOrderActivity extends Activity{
 					SQLiteDatabase db = memberDAO.getWritableDatabase();
 					ContentValues values = new ContentValues();
 					values.put("foodname", str_meal);
-					values.put("canteem", str_canteen);
-					values.put("palce", str_place);
+					values.put("canteen", str_canteen);
+					values.put("place", str_place);
 					values.put("intro", str_infor);
 					values.put("time", "0");
 					long rid = db.insert("myorder", null, values);

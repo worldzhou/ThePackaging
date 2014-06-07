@@ -16,7 +16,6 @@ public class PersionalActivity  extends Activity {
 	private Button Btn_history;
 	private TextView Text_name;
 	private EditText Text_intro;
-	AdminManage admin;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,9 +25,9 @@ public class PersionalActivity  extends Activity {
         Btn_history = (Button)findViewById(R.id.history);
         Text_name = (TextView)findViewById(R.id.name);
         Text_intro = (EditText)findViewById(R.id.intro);
-        
-        Text_name.setText(admin.getname());
-        Text_intro.setText(admin.getintro());
+        System.out.println(AdminManage.admin.getname());
+        Text_name.setText(AdminManage.admin.getname());
+        Text_intro.setText(AdminManage.admin.getintro());
         
         Btn_back.setOnClickListener(new OnClickListener() {
 			

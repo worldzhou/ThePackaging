@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -22,7 +24,9 @@ public class HistoryOrderActivity extends Activity {
 	private Button Btn_back;
 	private ListView listview1, listview2, listview3;
 	public SQLiteActivity memberDAO;
-	AdminManage admin;
+	List<Map<String, Object>> myorder1 = new ArrayList<Map<String, Object>>();
+	List<Map<String, Object>> myorder2 = new ArrayList<Map<String, Object>>();
+	List<Map<String, Object>> otherorder = new ArrayList<Map<String, Object>>();
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,60 @@ public class HistoryOrderActivity extends Activity {
         listview2 = (ListView)findViewById(R.id.listView2);
         listview3 = (ListView)findViewById(R.id.listView3);
         memberDAO = new SQLiteActivity(HistoryOrderActivity.this);
+        
+        findorders();
+        
+        listview1.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Bundle bundle = new Bundle();
+				bundle.putString("id", (String) myorder1.get(arg2).get("id"));
+				bundle.putString("who", "me");
+				
+				Intent intent = new Intent();
+				intent.setClass(HistoryOrderActivity.this, OrderDetailActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
+				finish();
+			}
+		});
+        listview2.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Bundle bundle = new Bundle();
+				bundle.putString("id", (String) myorder2.get(arg2).get("id"));
+				bundle.putString("who", "me");
+				
+				Intent intent = new Intent();
+				intent.setClass(HistoryOrderActivity.this, OrderDetailActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
+				finish();
+			}
+		});
+        listview3.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				Bundle bundle = new Bundle();
+				bundle.putString("id", (String) otherorder.get(arg2).get("id"));
+				bundle.putString("who", "other");
+				
+				Intent intent = new Intent();
+				intent.setClass(HistoryOrderActivity.this, OrderDetailActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
+				finish();
+			}
+		});
         
         Btn_back.setOnClickListener(new OnClickListener() {
 			
@@ -56,13 +114,12 @@ public class HistoryOrderActivity extends Activity {
 	
 	public void findorders()
 	{
-		List<Map<String, Object>> myorder1 = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> myorder2 = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> otherorder = new ArrayList<Map<String, Object>>();
+		
 		Map<String, Object> map = null;
 		SimpleAdapter listItemAdapter = null;
 		SQLiteDatabase db = memberDAO.getReadableDatabase();
 		Cursor c = db.rawQuery("select * from myorder", null);
+		System.out.println(c.getCount());
 		if(c.getCount()>0){
 			while(c.moveToNext()){
 				if(c.getString(8).equals("0"))
@@ -71,6 +128,7 @@ public class HistoryOrderActivity extends Activity {
 					map.put("intro", c.getString(6));
 					map.put("canteen", c.getString(2));
 					map.put("meal", c.getString(1));
+					map.put("id", c.getString(0));
 					myorder1.add(map);
 				}
 				else {
@@ -78,6 +136,7 @@ public class HistoryOrderActivity extends Activity {
 					map.put("name", c.getString(5));
 					map.put("canteen", c.getString(2));
 					map.put("meal", c.getString(1));
+					map.put("id", c.getString(0));
 					myorder2.add(map);
 				}
 			}
@@ -102,12 +161,13 @@ public class HistoryOrderActivity extends Activity {
 		c = db.rawQuery("select * from otherorder", null);
 		if(c.getCount()>0){
 			while(c.moveToNext()){
-				if(c.getString(5).equals(admin.getname()))
+				if(c.getString(10).equals("1") && c.getString(7).equals(AdminManage.admin.getphone()))
 				{
 					map = new HashMap<String, Object>();
 					map.put("name", c.getString(5));
 					map.put("canteen", c.getString(2));
 					map.put("meal", c.getString(1));
+					map.put("id", c.getString(0));
 					otherorder.add(map);
 				}
 			}

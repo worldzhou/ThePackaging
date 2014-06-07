@@ -20,7 +20,6 @@ public class UpdateActivity extends Activity{
 	private RadioGroup radio_sex;
 	private Button Btn_next;
 	public SQLiteActivity memberDAO;
-	AdminManage Admin;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +52,12 @@ public class UpdateActivity extends Activity{
 					values.put("sex", str_sex);
 					values.put("intro", str_intro);
 					String whereClause = "phone = ?";
-					String[] whereArgs = {Admin.getphone()};
+					String[] whereArgs = {AdminManage.admin.getphone()};
 					int row = db.update("users", values, whereClause, whereArgs);
 					db.close();
-					Admin.setname(str_name);
-					Admin.setsex(str_sex);
-					Admin.setintro(str_intro);
+					AdminManage.admin.setname(str_name);
+					AdminManage.admin.setsex(str_sex);
+					AdminManage.admin.setintro(str_intro);
 					
 					Intent intent  = new Intent();
 					intent.setClass(UpdateActivity.this, HallActivity.class);

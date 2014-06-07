@@ -46,6 +46,10 @@
             android:name="com.example.thepackaging.UpdateActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.example.thepackaging.OrderDetailActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

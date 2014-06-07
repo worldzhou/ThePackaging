@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -25,6 +28,7 @@ public class HallActivity extends Activity{
 	private Button Btn_add;
 	private Button Btn_per;
 	private Button Btn_reflash;
+	public SQLiteActivity memberDAO;
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,7 @@ public class HallActivity extends Activity{
         Btn_per = (Button)findViewById(R.id.persional);
         Btn_reflash = (Button)findViewById(R.id.reflash);
         mListView = (ListView)findViewById(R.id.listView);
+        memberDAO = new SQLiteActivity(HallActivity.this);
         
         setData();
         mListView.setOnItemClickListener(mItemClickListener);
@@ -70,59 +75,43 @@ public class HallActivity extends Activity{
     }
 	
 	private void setData() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("name", "world");
-		map.put("canteen", "¶þ·¹");
-		map.put("meal", "Ã÷Â¯ÉÕÑ¼ÍÈ");
-		mDataList.add(map);
-		
-		map = new HashMap<String, Object>();
-		map.put("name", "angle");
-		map.put("canteen", "¶þ·¹");
-		map.put("meal", "Ã÷Â¯ÉÕÑ¼ÍÈ");
-		mDataList.add(map);
-		
-		map = new HashMap<String, Object>();
-		map.put("name", "ÀîËÄ");
-		map.put("canteen", "¶þ·¹");
-		map.put("meal", "Ã÷Â¯ÉÕÑ¼ÍÈ");
-		mDataList.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("name", "ÍõÎå");
-		map.put("canteen", "¶þ·¹");
-		map.put("meal", "Ã÷Â¯ÉÕÑ¼ÍÈ");
-		mDataList.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("name", "ÖìÁù");
-		map.put("canteen", "¶þ·¹");
-		map.put("meal", "Ã÷Â¯ÉÕÑ¼ÍÈ");
-		mDataList.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("name", "×¿Æß");
-		map.put("canteen", "¶þ·¹");
-		map.put("meal", "Ã÷Â¯ÉÕÑ¼ÍÈ");
-		mDataList.add(map);
-		
-		map = new HashMap<String, Object>();
-		map.put("name", "×¿Æß");
-		map.put("canteen", "¶þ·¹");
-		map.put("meal", "Ã÷Â¯ÉÕÑ¼ÍÈ");
-		mDataList.add(map);
-		
-		map = new HashMap<String, Object>();
-		map.put("name", "×¿Æß");
-		map.put("canteen", "¶þ·¹");
-		map.put("meal", "Ã÷Â¯ÉÕÑ¼ÍÈ");
-		mDataList.add(map);
-		
-		map = new HashMap<String, Object>();
-		map.put("name", "");
-		map.put("canteen", "");
-		map.put("meal", "");
-		mDataList.add(map);
+		/*String[] meal = new String[]{"À±×Ó¼¦·¹","ºìÉÕ¶¹¸¯·¹","¶¹½ÇÇÑ×Ó·¹"};
+		String[] canteen = new String[]{"ËÄ·¹","Ò»·¹","¶þ·¹"};
+		String[] place = new String[]{"É÷6","ÖÁ2","¹«½Ì"};
+		String[] name = new String[]{"Ð¡Ð¡³¬","CC","ÃÔÄã±ù"};
+		String[] phone = new String[]{"13838383838","12020202020","213213213222"};
+		String[] intro = new String[]{"¼Ó·¹¼ÓÌÀ","ÉÙ·¹","¼Ó·¹£¬Ð»Ð»£¡"};
+		for(int i=0;i<3;i++){
+			SQLiteDatabase db = memberDAO.getWritableDatabase();
+			ContentValues values = new ContentValues();
+			values.put("foodname", meal[i]);
+			values.put("canteen", canteen[i]);
+			values.put("place", place[i]);
+			values.put("intro", intro[i]);
+			values.put("name", name[i]);
+			values.put("phone", phone[i]);
+			values.put("time", "0");
+			long rid = db.insert("otherorder", null, values);
+			db.close();
+		}
+		*/
+		addTotest();
+		Map<String, Object> map = null;
+		SQLiteDatabase db = memberDAO.getReadableDatabase();
+		Cursor c = db.rawQuery("select * from otherorder", null);
+		if(c.getCount()>0){
+			while(c.moveToNext()){
+				if(c.getString(10).equals("0"))
+				{
+					map = new HashMap<String, Object>();
+					map.put("id", c.getString(0));
+					map.put("name", c.getString(5));
+					map.put("canteen", c.getString(2));
+					map.put("meal", c.getString(1));
+					mDataList.add(map);
+				}
+			}
+		}
 		
 		SimpleAdapter listItemAdapter = new SimpleAdapter(this, 
 				mDataList, 
@@ -133,6 +122,11 @@ public class HallActivity extends Activity{
 		
 		mListView.setAdapter(listItemAdapter);
 	}
+	public void addTotest()
+	{
+		
+		
+	}
 	
 	private OnItemClickListener mItemClickListener = new OnItemClickListener() {
 
@@ -140,9 +134,15 @@ public class HallActivity extends Activity{
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			// TODO Auto-generated method stub
+			Bundle bundle = new Bundle();
+			bundle.putString("id", (String) mDataList.get(arg2).get("id"));
+			bundle.putString("who", "others");
 			
-			//Bundle bundle = new Bundle();
-			//bundle.putString("itemName", (String) mDataList.get(arg2).get("name"));
+			Intent intent = new Intent();
+			intent.setClass(HallActivity.this, OrderDetailActivity.class);
+			intent.putExtras(bundle);
+			startActivity(intent);
+			finish();
 		}
 	
 	};

@@ -1,6 +1,7 @@
 package com.example.thepackaging;
 
 public class AdminManage {
+	public static AdminManage admin;
 	private String phone;
 	private String password;
 	private String name;
